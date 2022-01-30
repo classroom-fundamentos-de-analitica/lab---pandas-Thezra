@@ -97,35 +97,24 @@ def pregunta_11():
 
 
 def pregunta_12():
-    """
-    Construya una tabla que contenga _c0 y una lista separada por ',' de los valores de
-    la columna _c5a y _c5b (unidos por ':') de la tabla `tbl2.tsv`.
+    ntbl = tbl2.copy()
+    ntbl["_c5"] = ntbl["_c5a"].astype(str)+":"+ ntbl["_c5b"].astype(str)
+    unicos = sorted(tbl2["_c0"].unique())
+    lista_nums = []
+    dic = {}
+    for elems in unicos:
+        lista = list(ntbl.groupby('_c0').get_group(elems)['_c5'])
+        lista.sort()
+        lista_nums.append("".join([str(_)+',' for _ in lista]).strip(','))
 
-    Rta/
-        _c0                                  _c5
-    0     0        bbb:0,ddd:9,ggg:8,hhh:2,jjj:3
-    1     1              aaa:3,ccc:2,ddd:0,hhh:9
-    2     2              ccc:6,ddd:2,ggg:5,jjj:1
-    ...
-    37   37                    eee:0,fff:2,hhh:6
-    38   38                    eee:0,fff:9,iii:2
-    39   39                    ggg:3,hhh:8,jjj:5
-    """
-    return
+    dic['_c0'] = unicos
+    dic['_c5'] = lista_nums
+    ans = pd.DataFrame(dic)
+    return ans
 
 
 def pregunta_13():
-    """
-    Si la columna _c0 es la clave en los archivos `tbl0.tsv` y `tbl2.tsv`, compute la
-    suma de tbl2._c5b por cada valor en tbl0._c1.
-
-    Rta/
-    _c1
-    A    146
-    B    134
-    C     81
-    D    112
-    E    275
-    Name: _c5b, dtype: int64
-    """
-    return
+    ntbl = pd.merge(tbl0, tbl2, on="_c0")
+    ntbl = ntbl[["_c1", "_c5b"]]
+    ans = ntbl.groupby('_c1').sum()
+    return ans["_c5b"]
