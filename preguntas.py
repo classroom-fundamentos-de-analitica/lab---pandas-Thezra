@@ -75,9 +75,8 @@ def pregunta_10():
         lista.sort()
         lista_nums.append( "".join([str(_)+':' for _ in lista]).strip(':'))
 
-    dic['_c0'] = unicos
-    dic['_c2'] = lista_nums
-    ans = pd.DataFrame(dic)
+    dic['lista'] = lista_nums
+    ans = pd.DataFrame({"_c2": lista_nums}, index=pd.Series(unicos, name="_c1"))
     return ans
 
 
