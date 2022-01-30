@@ -76,7 +76,7 @@ def pregunta_10():
         lista_nums.append( "".join([str(_)+':' for _ in lista]).strip(':'))
 
     dic['_c0'] = unicos
-    dic['lista'] = lista_nums
+    dic['_c2'] = lista_nums
     ans = pd.DataFrame(dic)
     return ans
 
