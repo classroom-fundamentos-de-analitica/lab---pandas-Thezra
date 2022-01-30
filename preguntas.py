@@ -44,87 +44,36 @@ def pregunta_04():
     ntbl = tbl0[["_c1", "_c2"]]
     ans = ntbl.groupby('_c1').mean()
     return ans["_c2"]
-print(pregunta_04())
+
 
 def pregunta_05():
-    """
-    Calcule el valor máximo de _c2 por cada letra en la columna _c1 del archivo
-    `tbl0.tsv`.
-
-    Rta/
-    _c1
-    A    9
-    B    9
-    C    9
-    D    7
-    E    9
-    Name: _c2, dtype: int64
-    """
-    return
+    ntbl = tbl0[["_c1", "_c2"]]
+    ans = ntbl.groupby('_c1').max()
+    return ans["_c2"]
 
 
 def pregunta_06():
-    """
-    Retorne una lista con los valores unicos de la columna _c4 de del archivo `tbl1.csv`
-    en mayusculas y ordenados alfabéticamente.
-
-    Rta/
-    ['A', 'B', 'C', 'D', 'E', 'F', 'G']
-
-    """
-    return
+    ntbl = tbl1["_c4"].unique()
+    ans = [elem.upper() for elem in ntbl]
+    return sorted(ans)
 
 
 def pregunta_07():
-    """
-    Calcule la suma de la _c2 por cada letra de la _c1 del archivo `tbl0.tsv`.
-
-    Rta/
-    _c1
-    A    37
-    B    36
-    C    27
-    D    23
-    E    67
-    Name: _c2, dtype: int64
-    """
-    return
+    ntbl = tbl0[["_c1", "_c2"]]
+    ans = ntbl.groupby('_c1').sum()
+    return ans["_c2"]
 
 
 def pregunta_08():
-    """
-    Agregue una columna llamada `suma` con la suma de _c0 y _c2 al archivo `tbl0.tsv`.
-
-    Rta/
-        _c0 _c1  _c2         _c3  suma
-    0     0   E    1  1999-02-28     1
-    1     1   A    2  1999-10-28     3
-    2     2   B    5  1998-05-02     7
-    ...
-    37   37   C    9  1997-07-22    46
-    38   38   E    1  1999-09-28    39
-    39   39   E    5  1998-01-26    44
-
-    """
-    return
+    ntbl = tbl0.copy()
+    ntbl["suma"] = ntbl["_c0"] + ntbl["_c2"]
+    return ntbl
 
 
 def pregunta_09():
-    """
-    Agregue el año como una columna al archivo `tbl0.tsv`.
-
-    Rta/
-        _c0 _c1  _c2         _c3  year
-    0     0   E    1  1999-02-28  1999
-    1     1   A    2  1999-10-28  1999
-    2     2   B    5  1998-05-02  1998
-    ...
-    37   37   C    9  1997-07-22  1997
-    38   38   E    1  1999-09-28  1999
-    39   39   E    5  1998-01-26  1998
-
-    """
-    return
+    ntbl = tbl0.copy()
+    ntbl["year"] = ntbl["_c3"].str[:4]
+    return ntbl
 
 
 def pregunta_10():
@@ -142,7 +91,7 @@ def pregunta_10():
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
     return
-
+print(pregunta_10())
 
 def pregunta_11():
     """
