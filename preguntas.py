@@ -15,44 +15,18 @@ tbl2 = pd.read_csv("tbl2.tsv", sep="\t")
 
 
 def pregunta_01():
-    """
-    ¿Cuál es la cantidad de filas en la tabla `tbl0.tsv`?
-
-    Rta/
-    40
-
-    """
     ans = tbl0.shape[0]
     return ans
-print(pregunta_01())
 
 
 def pregunta_02():
-    """
-    ¿Cuál es la cantidad de columnas en la tabla `tbl0.tsv`?
-
-    Rta/
-    4
-
-    """
-    return
+    ans = len(tbl0.columns)
+    return ans
 
 
 def pregunta_03():
-    """
-    ¿Cuál es la cantidad de registros por cada letra de la columna _c1 del archivo
-    `tbl0.tsv`?
-
-    Rta/
-    A     8
-    B     7
-    C     5
-    D     6
-    E    14
-    Name: _c1, dtype: int64
-
-    """
-    return
+    ans = tbl0.pivot_table(columns=['_c1'], aggfunc='size')
+    return ans
 
 
 def pregunta_04():
@@ -67,8 +41,10 @@ def pregunta_04():
     E    4.785714
     Name: _c2, dtype: float64
     """
-    return
-
+    ntbl = tbl0.groupby('_c1', as_index=False).mean()
+    ans = ntbl[["_c1", "_c2"]]
+    return ans
+print(pregunta_04())
 
 def pregunta_05():
     """
