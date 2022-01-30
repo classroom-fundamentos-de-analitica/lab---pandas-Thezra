@@ -42,7 +42,7 @@ def pregunta_04():
     Name: _c2, dtype: float64
     """
     ntbl = tbl0[["_c1", "_c2"]]
-    ans = ntbl.groupby('_c1', as_index=False).mean()
+    ans = ntbl.groupby('_c1').mean()
     return ans["_c2"]
 print(pregunta_04())
 
