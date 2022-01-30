@@ -30,17 +30,6 @@ def pregunta_03():
 
 
 def pregunta_04():
-    """
-    Calcule el promedio de _c2 por cada letra de la _c1 del archivo `tbl0.tsv`.
-
-    Rta/
-    A    4.625000
-    B    5.142857
-    C    5.400000
-    D    3.833333
-    E    4.785714
-    Name: _c2, dtype: float64
-    """
     ntbl = tbl0[["_c1", "_c2"]]
     ans = ntbl.groupby('_c1').mean()
     return ans["_c2"]
@@ -77,39 +66,35 @@ def pregunta_09():
 
 
 def pregunta_10():
-    """
-    Construya una tabla que contenga _c1 y una lista separada por ':' de los valores de
-    la columna _c2 para el archivo `tbl0.tsv`.
+    ntbl = tbl0[["_c1", "_c2"]]
+    unicos = sorted(tbl0["_c1"].unique())
+    lista_nums = []
+    dic = {}
+    for elems in unicos:
+        lista = list(ntbl.groupby('_c1').get_group(elems)['_c2'])
+        lista.sort()
+        lista_nums.append( "".join([str(_)+':' for _ in lista]).strip(':'))
 
-    Rta/
-                                   _c1
-      _c0
-    0   A              1:1:2:3:6:7:8:9
-    1   B                1:3:4:5:6:8:9
-    2   C                    0:5:6:7:9
-    3   D                  1:2:3:5:5:7
-    4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
-    """
-    return
-print(pregunta_10())
+    dic['_c0'] = unicos
+    dic['lista'] = lista_nums
+    ans = pd.DataFrame(dic)
+    return ans
+
 
 def pregunta_11():
-    """
-    Construya una tabla que contenga _c0 y una lista separada por ',' de los valores de
-    la columna _c4 del archivo `tbl1.tsv`.
+    ntbl = tbl1[["_c0", "_c4"]]
+    unicos = sorted(tbl1["_c0"].unique())
+    lista_nums = []
+    dic = {}
+    for elems in unicos:
+        lista = list(ntbl.groupby('_c0').get_group(elems)['_c4'])
+        lista.sort()
+        lista_nums.append( "".join([str(_)+',' for _ in lista]).strip(','))
 
-    Rta/
-        _c0      _c4
-    0     0    b,f,g
-    1     1    a,c,f
-    2     2  a,c,e,f
-    3     3      a,b
-    ...
-    37   37  a,c,e,f
-    38   38      d,e
-    39   39    a,d,f
-    """
-    return
+    dic['_c0'] = unicos
+    dic['_c4'] = lista_nums
+    ans = pd.DataFrame(dic)
+    return ans
 
 
 def pregunta_12():
