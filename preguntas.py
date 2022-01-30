@@ -41,10 +41,9 @@ def pregunta_04():
     E    4.785714
     Name: _c2, dtype: float64
     """
-    ntbl = tbl0.groupby('_c1', as_index=False).mean()
-    cosa = ntbl[["_c1", "_c2"]]
-    ans = cosa.to_string(header=False, index=False)
-    return ans
+    ntbl = tbl0[["_c1", "_c2"]]
+    ans = ntbl.groupby('_c1', as_index=False).mean()
+    return ans["_c2"]
 print(pregunta_04())
 
 def pregunta_05():
