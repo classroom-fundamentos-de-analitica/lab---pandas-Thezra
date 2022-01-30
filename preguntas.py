@@ -22,7 +22,9 @@ def pregunta_01():
     40
 
     """
-    return
+    ans = tbl0.shape[0]
+    return ans
+print(pregunta_01())
 
 
 def pregunta_02():
