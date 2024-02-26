@@ -15,206 +15,106 @@ tbl2 = pd.read_csv("tbl2.tsv", sep="\t")
 
 
 def pregunta_01():
-    """
-    ¿Cuál es la cantidad de filas en la tabla `tbl0.tsv`?
-
-    Rta/
-    40
-
-    """
-    return
+    ans = tbl0.shape[0]
+    return ans
 
 
 def pregunta_02():
-    """
-    ¿Cuál es la cantidad de columnas en la tabla `tbl0.tsv`?
-
-    Rta/
-    4
-
-    """
-    return
+    ans = len(tbl0.columns)
+    return ans
 
 
 def pregunta_03():
-    """
-    ¿Cuál es la cantidad de registros por cada letra de la columna _c1 del archivo
-    `tbl0.tsv`?
-
-    Rta/
-    A     8
-    B     7
-    C     5
-    D     6
-    E    14
-    Name: _c1, dtype: int64
-
-    """
-    return
+    ans = tbl0.pivot_table(columns=['_c1'], aggfunc='size')
+    return ans
 
 
 def pregunta_04():
-    """
-    Calcule el promedio de _c2 por cada letra de la _c1 del archivo `tbl0.tsv`.
-
-    Rta/
-    A    4.625000
-    B    5.142857
-    C    5.400000
-    D    3.833333
-    E    4.785714
-    Name: _c2, dtype: float64
-    """
-    return
+    ntbl = tbl0[["_c1", "_c2"]]
+    ans = ntbl.groupby('_c1').mean()
+    return ans["_c2"]
 
 
 def pregunta_05():
-    """
-    Calcule el valor máximo de _c2 por cada letra en la columna _c1 del archivo
-    `tbl0.tsv`.
-
-    Rta/
-    _c1
-    A    9
-    B    9
-    C    9
-    D    7
-    E    9
-    Name: _c2, dtype: int64
-    """
-    return
+    ntbl = tbl0[["_c1", "_c2"]]
+    ans = ntbl.groupby('_c1').max()
+    return ans["_c2"]
 
 
 def pregunta_06():
-    """
-    Retorne una lista con los valores unicos de la columna _c4 de del archivo `tbl1.csv`
-    en mayusculas y ordenados alfabéticamente.
-
-    Rta/
-    ['A', 'B', 'C', 'D', 'E', 'F', 'G']
-
-    """
-    return
+    ntbl = tbl1["_c4"].unique()
+    ans = [elem.upper() for elem in ntbl]
+    return sorted(ans)
 
 
 def pregunta_07():
-    """
-    Calcule la suma de la _c2 por cada letra de la _c1 del archivo `tbl0.tsv`.
-
-    Rta/
-    _c1
-    A    37
-    B    36
-    C    27
-    D    23
-    E    67
-    Name: _c2, dtype: int64
-    """
-    return
+    ntbl = tbl0[["_c1", "_c2"]]
+    ans = ntbl.groupby('_c1').sum()
+    return ans["_c2"]
 
 
 def pregunta_08():
-    """
-    Agregue una columna llamada `suma` con la suma de _c0 y _c2 al archivo `tbl0.tsv`.
-
-    Rta/
-        _c0 _c1  _c2         _c3  suma
-    0     0   E    1  1999-02-28     1
-    1     1   A    2  1999-10-28     3
-    2     2   B    5  1998-05-02     7
-    ...
-    37   37   C    9  1997-07-22    46
-    38   38   E    1  1999-09-28    39
-    39   39   E    5  1998-01-26    44
-
-    """
-    return
+    ntbl = tbl0.copy()
+    ntbl["suma"] = ntbl["_c0"] + ntbl["_c2"]
+    return ntbl
 
 
 def pregunta_09():
-    """
-    Agregue el año como una columna al archivo `tbl0.tsv`.
-
-    Rta/
-        _c0 _c1  _c2         _c3  year
-    0     0   E    1  1999-02-28  1999
-    1     1   A    2  1999-10-28  1999
-    2     2   B    5  1998-05-02  1998
-    ...
-    37   37   C    9  1997-07-22  1997
-    38   38   E    1  1999-09-28  1999
-    39   39   E    5  1998-01-26  1998
-
-    """
-    return
+    ntbl = tbl0.copy()
+    ntbl["year"] = ntbl["_c3"].str[:4]
+    return ntbl
 
 
 def pregunta_10():
-    """
-    Construya una tabla que contenga _c1 y una lista separada por ':' de los valores de
-    la columna _c2 para el archivo `tbl0.tsv`.
+    ntbl = tbl0[["_c1", "_c2"]]
+    unicos = sorted(tbl0["_c1"].unique())
+    lista_nums = []
+    dic = {}
+    for elems in unicos:
+        lista = list(ntbl.groupby('_c1').get_group(elems)['_c2'])
+        lista.sort()
+        lista_nums.append( "".join([str(_)+':' for _ in lista]).strip(':'))
 
-    Rta/
-                                   _c1
-      _c0
-    0   A              1:1:2:3:6:7:8:9
-    1   B                1:3:4:5:6:8:9
-    2   C                    0:5:6:7:9
-    3   D                  1:2:3:5:5:7
-    4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
-    """
-    return
+    dic['lista'] = lista_nums
+    ans = pd.DataFrame({"_c2": lista_nums}, index=pd.Series(unicos, name="_c1"))
+    return ans
 
 
 def pregunta_11():
-    """
-    Construya una tabla que contenga _c0 y una lista separada por ',' de los valores de
-    la columna _c4 del archivo `tbl1.tsv`.
+    ntbl = tbl1[["_c0", "_c4"]]
+    unicos = sorted(tbl1["_c0"].unique())
+    lista_nums = []
+    dic = {}
+    for elems in unicos:
+        lista = list(ntbl.groupby('_c0').get_group(elems)['_c4'])
+        lista.sort()
+        lista_nums.append( "".join([str(_)+',' for _ in lista]).strip(','))
 
-    Rta/
-        _c0      _c4
-    0     0    b,f,g
-    1     1    a,c,f
-    2     2  a,c,e,f
-    3     3      a,b
-    ...
-    37   37  a,c,e,f
-    38   38      d,e
-    39   39    a,d,f
-    """
-    return
+    dic['_c0'] = unicos
+    dic['_c4'] = lista_nums
+    ans = pd.DataFrame(dic)
+    return ans
 
 
 def pregunta_12():
-    """
-    Construya una tabla que contenga _c0 y una lista separada por ',' de los valores de
-    la columna _c5a y _c5b (unidos por ':') de la tabla `tbl2.tsv`.
+    ntbl = tbl2.copy()
+    ntbl["_c5"] = ntbl["_c5a"].astype(str)+":"+ ntbl["_c5b"].astype(str)
+    unicos = sorted(tbl2["_c0"].unique())
+    lista_nums = []
+    dic = {}
+    for elems in unicos:
+        lista = list(ntbl.groupby('_c0').get_group(elems)['_c5'])
+        lista.sort()
+        lista_nums.append("".join([str(_)+',' for _ in lista]).strip(','))
 
-    Rta/
-        _c0                                  _c5
-    0     0        bbb:0,ddd:9,ggg:8,hhh:2,jjj:3
-    1     1              aaa:3,ccc:2,ddd:0,hhh:9
-    2     2              ccc:6,ddd:2,ggg:5,jjj:1
-    ...
-    37   37                    eee:0,fff:2,hhh:6
-    38   38                    eee:0,fff:9,iii:2
-    39   39                    ggg:3,hhh:8,jjj:5
-    """
-    return
+    dic['_c0'] = unicos
+    dic['_c5'] = lista_nums
+    ans = pd.DataFrame(dic)
+    return ans
 
 
 def pregunta_13():
-    """
-    Si la columna _c0 es la clave en los archivos `tbl0.tsv` y `tbl2.tsv`, compute la
-    suma de tbl2._c5b por cada valor en tbl0._c1.
-
-    Rta/
-    _c1
-    A    146
-    B    134
-    C     81
-    D    112
-    E    275
-    Name: _c5b, dtype: int64
-    """
-    return
+    ntbl = pd.merge(tbl0, tbl2, on="_c0")
+    ntbl = ntbl[["_c1", "_c5b"]]
+    ans = ntbl.groupby('_c1').sum()
+    return ans["_c5b"]
